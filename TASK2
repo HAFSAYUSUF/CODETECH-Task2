@@ -1,0 +1,77 @@
+create database db2;
+use db2;
+CREATE TABLE Products(
+  ProductID INT AUTO_INCREMENT PRIMARY KEY,
+  ProductName VARCHAR(100) NOT NULL,
+  Stock INT NOT NULL
+  );
+  ALTER TABLE Products
+  add Price decimal(10,2) NOT NULL;
+  SELECT * FROM Products;
+  CREATE TABLE Customers(
+    CustomerId INT AUTO_INCREMENT PRIMARY KEY,
+    FullName VARCHAR(255) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Phone VARCHAR(15),
+    Address  TEXT
+);
+SELECT * FROM Customers;
+CREATE TABLE Orders(
+  OrderId INT AUTO_INCREMENT PRIMARY KEY,
+  CustomerId INT NOT NULL,
+  OrderDate DATETIME DEFAULT  CURRENT_TIMESTAMP,
+  TotalAmount DECIMAL(10,2),
+  Status  ENUM('Pending','completed','Failed'),
+  FOREIGN KEY(CustomerId) REFERENCES Customers(CustomerId)
+  );
+  SELECT * FROM Orders;
+  CREATE TABLE Orderdetails(
+  Orderdetail_id INT  AUTO_INCREMENT PRIMARY KEY,
+  OrderId INT NOT NULL,
+  ProductID INT NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (OrderId)REFERENCES Orders(OrderId),
+  FOREIGN KEY (ProductId) REFERENCES Products(ProductID)
+  );
+ SELECT * FROM Orderdetails ;
+ CREATE TABLE Payment(
+ PaymentID INT AUTO_INCREMENT PRIMARY KEY,
+ OrderId INT NOT NULL,
+ PaymentDate datetime default current_timestamp,
+ Amount DECIMAL (10,2) NOT  NULL,
+ PaymentMethod Enum('CreditCard','DebitCard','PayPal','Cash on delivery')NOT NULL,
+ status ENUM('pending','completed','failed') DEFAULT 'pending',
+ FOREIGN KEY (OrderId) REFERENCES Orders(OrderId)
+ );
+SELECT * FROM Payment;
+INSERT INTO Customers(FullName,Email,Phone,Address)
+Values('johhn','john123@gmail.com',9544678999,'heaven');
+INSERT INTO Products(ProductName,Price,Stock)
+values
+('watch',1000,20),
+('shoes',500,7),
+('jeans',600,34);
+INSERT INTO Orders (OrderId,CustomerId,TotalAmount)
+VALUES (1,1,1500);
+INSERT INTO OrderDetails(OrderId,ProductID,quantity,price)
+values( 1,1,1,1000),
+(1,2,1,500);
+UPDATE Products
+SET Stock=Stock-1
+WHERE ProductID=1;
+UPDATE Products
+SET Stock=Stock-1
+WHERE ProductID=2;
+INSERT INTO Payment(OrderId,Amount,PaymentMethod, status)
+values
+(1,1500,'CreditCard','completed');
+UPDATE Orders
+SET Status = 'Failed'
+WHERE OrderId=1;
+SELECT sum(Amount) as totalsales
+FROM Payment
+where status='completed';
+SELECT p.PaymentID,p.PaymentDate,p.PaymentMethod,p.status
+FROM Payment p
+WHERE p.OrderId=1;
