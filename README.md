@@ -23,6 +23,7 @@ Example Queries
 
 Retrieve all orders for a customer:
 
+
   SELECT * FROM Orders WHERE CustomerID = 1;
 
 
@@ -31,6 +32,8 @@ Retrieve all orders for a customer:
 1. Clone the repository.
 2. Import the SQL script into your database.
 3. Run the script to create tables and add data.
+   ![image](https://github.com/user-attachments/assets/dda784e0-259c-4b6e-91ff-39ca3ede29ad)
+
 
 
 
